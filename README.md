@@ -1,4 +1,23 @@
-# Depo - Extensões de Anime
+# Depo - Extensões de Anime para Aniyomi
+
+Repositório com extensões de anime para o **Aniyomi**.
+
+## 📥 Como Adicionar ao Aniyomi
+
+1. Abra o Aniyomi
+2. Vá para **Definições > Navegador > Repositórios de Extensões**
+3. Clique em **+** para adicionar um novo repositório
+4. Cole a URL abaixo:
+
+```
+https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/main/index.min.json
+```
+
+5. Confirme e as extensões estarão disponíveis para instalar
+
+## 📦 Extensões Disponíveis
+
+Veja o ficheiro `index.json` para a lista completa de extensões e suas fontes.
 
 Repositório de extensões de anime para o [Aniyomi](https://github.com/aniyomiorg/aniyomi).
 
