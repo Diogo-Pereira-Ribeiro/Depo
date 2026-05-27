@@ -1,0 +1,33 @@
+name: Publish Index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.min.json'
+      - 'index.json'
+      - 'repo.json'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      
+      - name: Update repo-public branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          git checkout --orphan repo-public-temp
+          git rm -rf .
+          git checkout main -- index.json index.min.json repo.json
+          
+          git commit -m "Sync index files from main"
+          git branch -D repo-public || true
+          git branch -m repo-public-temp repo-public
+          git push -f origin repo-public
