@@ -12,29 +12,38 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout main branch
+        uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
       
-      - name: Update repo-public branch
+      - name: Setup git config
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Create repo-public branch with index files
+        run: |
+          # Fetch all branches
+          git fetch origin
           
-          # Criar ou limpar branch repo-public
-          git checkout --orphan repo-public-temp || git checkout repo-public
-          git rm -rf . || true
+          # Try to check out existing repo-public, or create new one
+          git checkout repo-public 2>/dev/null || git checkout --orphan repo-public
           
-          # Trazer apenas ficheiros de índice
-          git checkout main -- index.json index.min.json repo.json
+          # Remove all files
+          git rm -rf . 2>/dev/null || true
           
-          # Commit e push
+          # Copy index files from main
+          git checkout origin/main -- index.json index.min.json repo.json
+          
+          # Commit changes
           git add index.json index.min.json repo.json
-          git commit -m "Sync index files from main [$(date +'%Y-%m-%d %H:%M:%S')]" || true
+          git commit -m "Sync index files from main - $(date +'%Y-%m-%d %H:%M:%S')" --allow-empty
           
-          git branch -D repo-public 2>/dev/null || true
-          git branch -m repo-public-temp repo-public
-          git push -f origin repo-public
+          # Push to origin
+          git push origin repo-public --force
