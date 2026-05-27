@@ -31,3 +31,10 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Generated repository index (local build)
+repo/
+index.json
+index.min.json
+repo.json
+output.json
