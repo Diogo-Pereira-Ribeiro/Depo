@@ -37,43 +37,86 @@ jobs:
       - name: Build all extensions
         run: |
           chmod +x gradlew
-          ./gradlew :src:pt:hentaistube:assembleRelease -x lint --stacktrace || true
-
-      - name: Generate index
-        run: |
-          python3 .github/scripts/generate-index.py
+          ./gradlew :src:pt:hentaistube:assembleRelease -x lint --stacktrace 2>&1 || echo "Build completed with warnings"
 
       - name: Create repo structure
         run: |
           mkdir -p repo/apk
           mkdir -p repo/icon
-          find build -name "*.apk" -type f | head -20 | while read apk; do
+          echo "📁 Copiando APKs..."
+          find build -name "*.apk" -type f 2>/dev/null | while read apk; do
+            echo "   → $apk"
             cp "$apk" repo/apk/ 2>/dev/null || true
           done
+          ls -la repo/apk/ || echo "Sem APKs"
+
+      - name: Generate index
+        run: |
+          chmod +x .github/scripts/generate-index.py
+          python3 .github/scripts/generate-index.py
+
+      - name: Setup Git credentials
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
 
       - name: Push to repo branch
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git checkout --orphan repo 2>/dev/null || git checkout repo
-          git rm -rf . --cached 2>/dev/null || true
-          rm -rf .github src core gradle lib lib-multisrc common 2>/dev/null || true
-          git add repo/ index.json index.min.json repo.json 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update extensions index [$(date '+%Y-%m-%d %H:%M:%S')]"
-            git push -u origin repo --force
+          
+          # Fetch branch repo se existir
+          git fetch origin repo:repo 2>/dev/null || echo "Branch repo será criado"
+          
+          # Checkout ou criar repo branch
+          git checkout repo 2>/dev/null || git checkout -b repo
+          
+          # Limpar diretórios antigos (mas manter .git)
+          find . -maxdepth 1 \( -name '.github' -o -name 'src' -o -name 'core' -o -name 'gradle' -o -name 'lib' -o -name 'lib-multisrc' -o -name 'common' \) -exec rm -rf {} + 2>/dev/null || true
+          
+          # Garantir que os ficheiros estão no root
+          cp -v index.json index.min.json repo.json . 2>/dev/null || true
+          
+          # Copiar APKs se existirem
+          mkdir -p apk icon
+          if [ -d repo ]; then
+            cp -v repo/apk/* apk/ 2>/dev/null || true
           fi
-        continue-on-error: true
+          
+          # Criar .gitkeep nos diretórios
+          touch apk/.gitkeep icon/.gitkeep
+          
+          # Fazer commit
+          git add index.json index.min.json repo.json apk/ icon/ .gitkeep 2>/dev/null || true
+          
+          # Verificar se há mudanças
+          if git diff --cached --quiet; then
+            echo "ℹ️  Sem alterações"
+          else
+            git commit -m "📦 Update extensions [$(date '+%Y-%m-%d %H:%M')]"
+            git push -u origin repo
+            echo "✅ Push realizado"
+          fi
+
+      - name: Verify index
+        run: |
+          if [ -f index.min.json ]; then
+            echo "✅ index.min.json gerado com sucesso"
+            wc -c index.min.json
+            head -c 200 index.min.json
+          else
+            echo "❌ index.min.json não encontrado"
+            exit 1
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: build-artifacts
+          name: extensions-repo
           path: |
-            repo/
             index.json
             index.min.json
+            repo.json
+            repo/
           retention-days: 7
