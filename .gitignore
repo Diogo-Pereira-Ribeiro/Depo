@@ -32,9 +32,6 @@ google-services.json
 # Android Profiling
 *.hprof
 
-# Generated repository index (local build)
-repo/
-index.json
-index.min.json
-repo.json
-output.json
+# Generated repository index (local build) - NOTE: index files are now committed
+# repo/ - folder removed as we use main branch
+# index.json, index.min.json, repo.json - now tracked for Aniyomi
