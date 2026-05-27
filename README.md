@@ -15,8 +15,6 @@ https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo-public/index.m
 
 5. Confirme e as extensões estarão disponíveis para instalar
 
-> **Nota:** O repositório é privado, mas a branch `repo-public` é pública e contém apenas os ficheiros de índice para o Aniyomi.
-
 ## 📦 Extensões Disponíveis
 
 Veja o ficheiro `index.json` para a lista completa de extensões e suas fontes.
