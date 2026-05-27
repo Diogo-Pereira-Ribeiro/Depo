@@ -10,10 +10,12 @@ Repositório com extensões de anime para o **Aniyomi**.
 4. Cole a URL abaixo:
 
 ```
-https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/main/index.min.json
+https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo-public/index.min.json
 ```
 
 5. Confirme e as extensões estarão disponíveis para instalar
+
+> **Nota:** O repositório é privado, mas a branch `repo-public` é pública e contém apenas os ficheiros de índice para o Aniyomi.
 
 ## 📦 Extensões Disponíveis
 
