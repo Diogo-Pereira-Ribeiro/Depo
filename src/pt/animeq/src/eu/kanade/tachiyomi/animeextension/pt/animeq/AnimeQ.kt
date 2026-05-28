@@ -28,7 +28,7 @@ class AnimeQ :
 
     override val name = "AnimeQ"
 
-    override val baseUrl = "https://animeq.blog"
+    override val baseUrl = "https://animeq.net"
 
     override val lang = "pt-BR"
 
