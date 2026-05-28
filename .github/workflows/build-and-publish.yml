@@ -34,10 +34,10 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Build all extensions
+      - name: Build selected extensions
         run: |
           chmod +x gradlew
-          ./gradlew :src:pt:hentaistube:assembleRelease -x lint --stacktrace 2>&1 || echo "Build completed with warnings"
+          ./gradlew :src:pt:animeq:assembleRelease :src:pt:animesdrive:assembleRelease :src:pt:anitube:assembleRelease :src:pt:hentaistube:assembleRelease -x lint --stacktrace 2>&1 || echo "Build completed with warnings"
 
       - name: Create repo structure
         run: |
