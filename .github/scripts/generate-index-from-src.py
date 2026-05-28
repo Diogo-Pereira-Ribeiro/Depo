@@ -158,33 +158,20 @@ def main():
     # Get workspace root
     script_path = Path(__file__).parent.parent.parent
     
-    # Write index.min.json
+    # Extract just the extensions array (Aniyomi format)
+    extensions_only = index['extensions']
+    
+    # Write index.min.json (ARRAY FORMAT for Aniyomi)
     index_min_path = script_path / 'index.min.json'
     with open(index_min_path, 'w', encoding='utf-8') as f:
-        json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
-    print(f"✅ Created {index_min_path}")
+        json.dump(extensions_only, f, ensure_ascii=False, separators=(',', ':'))
+    print(f"✅ Created {index_min_path} (array format)")
     
-    # Write index.json (formatted)
+    # Write index.json (formatted ARRAY for Aniyomi)
     index_path = script_path / 'index.json'
     with open(index_path, 'w', encoding='utf-8') as f:
-        json.dump(index, f, ensure_ascii=False, indent=2)
-    print(f"✅ Created {index_path}")
-    
-    # Write repo.json
-    repo_info = {
-        'name': index['repo']['name'],
-        'description': index['repo']['description'],
-        'owner': index['repo']['owner'],
-        'url': index['repo']['url'],
-        'logo': index['repo']['logo'],
-        'extensions': len(index['extensions']),
-        'updated': index['generated']
-    }
-    
-    repo_path = script_path / 'repo.json'
-    with open(repo_path, 'w', encoding='utf-8') as f:
-        json.dump(repo_info, f, ensure_ascii=False, indent=2)
-    print(f"✅ Created {repo_path}")
+        json.dump(extensions_only, f, ensure_ascii=False, indent=2)
+    print(f"✅ Created {index_path} (array format)")
     
     # Summary
     print(f"\n📊 Index Summary:")
