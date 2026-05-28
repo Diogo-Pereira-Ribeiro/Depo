@@ -209,16 +209,31 @@ def main():
     # Extract just the extensions array (Aniyomi format)
     extensions_only = index['extensions']
     
+<<<<<<< HEAD
     # Convert relative apk/icon paths to full raw GitHub URLs pointing to branch 'repo'
     raw_base = 'https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/'
+=======
+    # Convert relative apk/icon paths to full raw GitHub URLs
+    # APKs will be published to branch 'repo' by CI; icons we keep in 'main' for immediate availability
+    raw_base_repo = 'https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/'
+    raw_base_main = 'https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/main/'
+>>>>>>> c61379e (fix(icons): serve icons from main branch and add icons to repo)
     for ext in extensions_only:
         if 'apk' in ext and ext['apk']:
             # If already a full URL, keep it
             if not ext['apk'].startswith('http'):
+<<<<<<< HEAD
                 ext['apk'] = raw_base + ext['apk'].lstrip('/')
         if 'icon' in ext and ext['icon']:
             if not ext['icon'].startswith('http'):
                 ext['icon'] = raw_base + ext['icon'].lstrip('/')
+=======
+                ext['apk'] = raw_base_repo + ext['apk'].lstrip('/')
+        if 'icon' in ext and ext['icon']:
+            if not ext['icon'].startswith('http'):
+                # icons served from main/icon/ so they are immediately available
+                ext['icon'] = raw_base_main + ext['icon'].lstrip('/')
+>>>>>>> c61379e (fix(icons): serve icons from main branch and add icons to repo)
 
     # Write index.min.json (ARRAY FORMAT for Aniyomi)
     index_min_path = script_path / 'index.min.json'
