@@ -81,6 +81,7 @@ jobs:
           mkdir -p apk icon
           if [ -d repo ]; then
             cp -v repo/apk/* apk/ 2>/dev/null || true
+            cp -v repo/icon/* icon/ 2>/dev/null || true
           fi
           
           # Criar .gitkeep nos diretórios
