@@ -94,6 +94,30 @@ def generate_index():
     # Criar diretórios se não existirem
     Path("repo").mkdir(exist_ok=True)
     
+    # Before writing, convert apk/icon relative paths to full raw URLs and apply known baseUrl overrides
+    raw_base = 'https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/'
+    overrides = {
+        'eu.kanade.tachiyomi.animeextension.pt.animesdrive': 'https://animesdrive.online',
+        'eu.kanade.tachiyomi.animeextension.pt.animeq': 'https://animeq.net',
+        'eu.kanade.tachiyomi.animeextension.pt.anitube': 'https://anitube.vip',
+        'eu.kanade.tachiyomi.animeextension.pt.hentaistube': 'https://www.hentaistube.com'
+    }
+
+    for ext in extensions:
+        if 'apk' in ext and ext['apk'] and not ext['apk'].startswith('http'):
+            ext['apk'] = raw_base + ext['apk'].lstrip('/')
+        if 'icon' in ext and ext['icon'] and not ext['icon'].startswith('http'):
+            ext['icon'] = raw_base + ext['icon'].lstrip('/')
+        # apply overrides for baseUrl
+        pkg = ext.get('package') or ext.get('pkg')
+        if pkg:
+            base = overrides.get(pkg)
+            if base:
+                try:
+                    ext['sources'][0]['baseUrl'] = base
+                except Exception:
+                    pass
+
     # Write full index
     with open("index.json", "w", encoding="utf-8") as f:
         json.dump(index_data, f, indent=2, ensure_ascii=False)
