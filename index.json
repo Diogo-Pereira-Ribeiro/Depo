@@ -2,7 +2,9 @@
   {
     "name": "Aniyomi: AnimeQ",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.animeq",
-    "apk": "aniyomi-pt.animeq-v14.4.apk",
+    "package": "eu.kanade.tachiyomi.animeextension.pt.animeq",
+    "apk": "apk/aniyomi-pt.animeq-v14.4.apk",
+    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.animeq.png",
     "lang": "pt-BR",
     "code": 4,
     "version": "14.4",
@@ -11,15 +13,17 @@
       {
         "name": "AnimeQ",
         "lang": "pt-BR",
-        "id": 6189655481089939379,
-        "baseUrl": "https://animeq.blog"
+        "id": 8549565825494952802,
+        "baseUrl": "https://animeq.net"
       }
     ]
   },
   {
     "name": "Aniyomi: AnimesDrive",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.animesdrive",
-    "apk": "aniyomi-pt.animesdrive-v14.1.apk",
+    "package": "eu.kanade.tachiyomi.animeextension.pt.animesdrive",
+    "apk": "apk/aniyomi-pt.animesdrive-v14.1.apk",
+    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.animesdrive.png",
     "lang": "pt-BR",
     "code": 1,
     "version": "14.1",
@@ -28,7 +32,7 @@
       {
         "name": "AnimesDrive",
         "lang": "pt-BR",
-        "id": 4290689421623649318,
+        "id": 6564420538361143429,
         "baseUrl": ""
       }
     ]
@@ -36,7 +40,9 @@
   {
     "name": "Aniyomi: Anitube",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.anitube",
-    "apk": "aniyomi-pt.anitube-v14.27.apk",
+    "package": "eu.kanade.tachiyomi.animeextension.pt.anitube",
+    "apk": "apk/aniyomi-pt.anitube-v14.27.apk",
+    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.anitube.png",
     "lang": "pt-BR",
     "code": 27,
     "version": "14.27",
@@ -45,7 +51,7 @@
       {
         "name": "Anitube",
         "lang": "pt-BR",
-        "id": 8942710462951015706,
+        "id": 4505904112164802741,
         "baseUrl": "https://anitube.vip"
       }
     ]
@@ -53,7 +59,9 @@
   {
     "name": "Aniyomi: HentaisTube",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.hentaistube",
-    "apk": "aniyomi-pt.hentaistube-v14.5.apk",
+    "package": "eu.kanade.tachiyomi.animeextension.pt.hentaistube",
+    "apk": "apk/aniyomi-pt.hentaistube-v14.5.apk",
+    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.hentaistube.png",
     "lang": "pt-BR",
     "code": 5,
     "version": "14.5",
@@ -62,7 +70,7 @@
       {
         "name": "HentaisTube",
         "lang": "pt-BR",
-        "id": 858621827008684570,
+        "id": 755139143857681856,
         "baseUrl": "https://www.hentaistube.com"
       }
     ]

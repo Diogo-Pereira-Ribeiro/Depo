@@ -112,11 +112,18 @@ def generate_index():
             # Create extension entry
             # Generate stable ID from package name - use long integer
             id_hash = int(hash(package_name)) & 0x7fffffffffffffff
-            
+            # Build apk filename expected in repo/apk
+            apk_filename = f'aniyomi-{lang_code}.{ext_name}-v{version_str}.apk'
+
+            # Resolve icon: prefer existing repo icon, else try to extract from src resources
+            icon_filename = f'{package_name}.png'
+
             extension = {
                 'name': f'Aniyomi: {gradle_info["name"]}',
                 'pkg': package_name,
-                'apk': f'aniyomi-{lang_code}.{ext_name}-v{version_str}.apk',
+                'package': package_name,
+                'apk': f'apk/{apk_filename}',
+                'icon': f'icon/{icon_filename}',
                 'lang': get_language_name(lang_code),
                 'code': gradle_info['version_code'],
                 'version': version_str,
@@ -160,6 +167,38 @@ def main():
     
     # Get workspace root
     script_path = Path(__file__).parent.parent.parent
+
+    # Ensure repo/icon and repo/apk directories exist
+    repo_icon_dir = script_path / 'repo' / 'icon'
+    repo_apk_dir = script_path / 'repo' / 'apk'
+    repo_icon_dir.mkdir(parents=True, exist_ok=True)
+    repo_apk_dir.mkdir(parents=True, exist_ok=True)
+
+    # Try to copy icons from source folders if present
+    print("🔍 Ensuring icons are available in repo/icon/...")
+    for lang_folder in (script_path / 'src').iterdir():
+        if not lang_folder.is_dir():
+            continue
+        for ext_folder in lang_folder.iterdir():
+            if not ext_folder.is_dir():
+                continue
+            lang_code = lang_folder.name
+            ext_name = ext_folder.name
+            package_name = f'eu.kanade.tachiyomi.animeextension.{lang_code}.{ext_name}'
+            icon_target = repo_icon_dir / f"{package_name}.png"
+            # If icon already exists in repo/icon, skip
+            if icon_target.exists():
+                continue
+            # Look for common launcher icons inside src extension
+            possible_icons = list(ext_folder.glob('**/ic_launcher*.png')) + list(ext_folder.glob('**/icon.png'))
+            if possible_icons:
+                try:
+                    src_icon = possible_icons[0]
+                    print(f"   → Copying icon for {package_name} from {src_icon}")
+                    with open(src_icon, 'rb') as sf, open(icon_target, 'wb') as tf:
+                        tf.write(sf.read())
+                except Exception as e:
+                    print(f"   ⚠️  Failed to copy icon for {package_name}: {e}")
     
     # Extract just the extensions array (Aniyomi format)
     extensions_only = index['extensions']
