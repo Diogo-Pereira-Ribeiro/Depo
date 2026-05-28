@@ -62,41 +62,46 @@ jobs:
 
       - name: Push to repo branch
         run: |
+          set -euo pipefail
+          set -x
+
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          
-          # Fetch branch repo se existir
-          git fetch origin repo:repo 2>/dev/null || echo "Branch repo será criado"
-          
-          # Checkout ou criar repo branch
-          git checkout repo 2>/dev/null || git checkout -b repo
-          
-          # Limpar diretórios antigos (mas manter .git)
-          find . -maxdepth 1 \( -name '.github' -o -name 'src' -o -name 'core' -o -name 'gradle' -o -name 'lib' -o -name 'lib-multisrc' -o -name 'common' \) -exec rm -rf {} + 2>/dev/null || true
-          
-          # Garantir que os ficheiros estão no root
-          cp -v index.json index.min.json repo.json . 2>/dev/null || true
-          
-          # Copiar APKs se existirem
-          mkdir -p apk icon
-          if [ -d repo ]; then
-            cp -v repo/apk/* apk/ 2>/dev/null || true
-            cp -v repo/icon/* icon/ 2>/dev/null || true
-          fi
-          
-          # Criar .gitkeep nos diretórios
-          touch apk/.gitkeep icon/.gitkeep
-          
-          # Fazer commit
-          git add index.json index.min.json repo.json apk/ icon/ .gitkeep 2>/dev/null || true
 
-          # Verificar se há mudanças
+          echo "Remote before change:"
+          git remote -v || true
+
+          # Ensure auth using GITHUB_TOKEN for pushes
+          if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git || true
+          fi
+          git fetch origin --prune || true
+
+          # Checkout or create repo branch
+          if git ls-remote --exit-code --heads origin repo >/dev/null 2>&1; then
+            git checkout repo
+            git reset --hard origin/repo || true
+          else
+            git checkout --orphan repo
+            git rm -rf . || true
+          fi
+
+          # Copy generated files into repo branch root
+          mkdir -p apk icon
+          cp -v index.json index.min.json repo.json ./ 2>/dev/null || true
+          cp -v repo/apk/* apk/ 2>/dev/null || true
+          cp -v repo/icon/* icon/ 2>/dev/null || true
+
+          touch apk/.gitkeep icon/.gitkeep
+
+          git add -A
+          git status --porcelain --untracked-files=all || true
+
           if git diff --cached --quiet; then
             echo "ℹ️  Sem alterações"
           else
-            git commit -m "📦 Update extensions [$(date '+%Y-%m-%d %H:%M')]"
-            # Force push to ensure repo branch is updated even if histories diverge
-            git push -f origin repo
+            git commit -m "📦 Update extensions [$(date '+%Y-%m-%d %H:%M:%S')]" || true
+            git push --force --set-upstream origin repo
             echo "✅ Push realizado (force)"
           fi
 
