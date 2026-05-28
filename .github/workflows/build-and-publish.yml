@@ -62,11 +62,11 @@ jobs:
 
       - name: Prepare push token
         run: |
-          echo "PUSH_TOKEN=${{ secrets.REPO_PUSH_TOKEN || secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "PUSH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
           if [ -n "${PUSH_TOKEN}" ]; then
-            echo "Using provided push token"
+            echo "Using GITHUB_TOKEN for pushes"
           else
-            echo "No push token available; pushes will likely fail"
+            echo "No GITHUB_TOKEN available; pushes will likely fail"
           fi
 
       - name: Push to repo branch
