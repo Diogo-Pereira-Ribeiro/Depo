@@ -37,6 +37,11 @@ def extract_gradle_info(gradle_path):
     nsfw_match = re.search(r"isNsfw\s*=\s*(true|false)", content, re.IGNORECASE)
     if nsfw_match:
         info['nsfw'] = 1 if nsfw_match.group(1).lower() == 'true' else 0
+
+    # Extract baseUrl if present in gradle
+    baseurl_match = re.search(r"baseUrl\s*=\s*['\"]([^'\"]+)['\"]", content)
+    if baseurl_match:
+        info['baseUrl'] = baseurl_match.group(1)
     
     return info
 
@@ -99,9 +104,10 @@ def generate_index():
             # Extract info
             gradle_info = extract_gradle_info(str(gradle_path))
             base_url = extract_manifest_info(str(manifest_path))
-            
+            # If no host in manifest, try gradle baseUrl
             if not base_url:
-                base_url = ''
+                gradle_base = gradle_info.get('baseUrl') if gradle_info else None
+                base_url = gradle_base or ''
             
             # Build package name
             package_name = f'eu.kanade.tachiyomi.animeextension.{lang_code}.{ext_name}'
@@ -203,6 +209,17 @@ def main():
     # Extract just the extensions array (Aniyomi format)
     extensions_only = index['extensions']
     
+    # Convert relative apk/icon paths to full raw GitHub URLs pointing to branch 'repo'
+    raw_base = 'https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/'
+    for ext in extensions_only:
+        if 'apk' in ext and ext['apk']:
+            # If already a full URL, keep it
+            if not ext['apk'].startswith('http'):
+                ext['apk'] = raw_base + ext['apk'].lstrip('/')
+        if 'icon' in ext and ext['icon']:
+            if not ext['icon'].startswith('http'):
+                ext['icon'] = raw_base + ext['icon'].lstrip('/')
+
     # Write index.min.json (ARRAY FORMAT for Aniyomi)
     index_min_path = script_path / 'index.min.json'
     with open(index_min_path, 'w', encoding='utf-8') as f:
