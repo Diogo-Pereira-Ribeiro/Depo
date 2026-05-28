@@ -3,8 +3,8 @@
     "name": "Aniyomi: AnimeQ",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.animeq",
     "package": "eu.kanade.tachiyomi.animeextension.pt.animeq",
-    "apk": "apk/aniyomi-pt.animeq-v14.4.apk",
-    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.animeq.png",
+    "apk": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/apk/aniyomi-pt.animeq-v14.4.apk",
+    "icon": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/icon/eu.kanade.tachiyomi.animeextension.pt.animeq.png",
     "lang": "pt-BR",
     "code": 4,
     "version": "14.4",
@@ -13,7 +13,7 @@
       {
         "name": "AnimeQ",
         "lang": "pt-BR",
-        "id": 8549565825494952802,
+        "id": 4660637798455453785,
         "baseUrl": "https://animeq.net"
       }
     ]
@@ -22,8 +22,8 @@
     "name": "Aniyomi: AnimesDrive",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.animesdrive",
     "package": "eu.kanade.tachiyomi.animeextension.pt.animesdrive",
-    "apk": "apk/aniyomi-pt.animesdrive-v14.1.apk",
-    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.animesdrive.png",
+    "apk": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/apk/aniyomi-pt.animesdrive-v14.1.apk",
+    "icon": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/icon/eu.kanade.tachiyomi.animeextension.pt.animesdrive.png",
     "lang": "pt-BR",
     "code": 1,
     "version": "14.1",
@@ -32,8 +32,8 @@
       {
         "name": "AnimesDrive",
         "lang": "pt-BR",
-        "id": 6564420538361143429,
-        "baseUrl": ""
+        "id": 6694637873894022353,
+        "baseUrl": "https://animesdrive.online"
       }
     ]
   },
@@ -41,8 +41,8 @@
     "name": "Aniyomi: Anitube",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.anitube",
     "package": "eu.kanade.tachiyomi.animeextension.pt.anitube",
-    "apk": "apk/aniyomi-pt.anitube-v14.27.apk",
-    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.anitube.png",
+    "apk": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/apk/aniyomi-pt.anitube-v14.27.apk",
+    "icon": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/icon/eu.kanade.tachiyomi.animeextension.pt.anitube.png",
     "lang": "pt-BR",
     "code": 27,
     "version": "14.27",
@@ -51,7 +51,7 @@
       {
         "name": "Anitube",
         "lang": "pt-BR",
-        "id": 4505904112164802741,
+        "id": 1681673808079711614,
         "baseUrl": "https://anitube.vip"
       }
     ]
@@ -60,8 +60,8 @@
     "name": "Aniyomi: HentaisTube",
     "pkg": "eu.kanade.tachiyomi.animeextension.pt.hentaistube",
     "package": "eu.kanade.tachiyomi.animeextension.pt.hentaistube",
-    "apk": "apk/aniyomi-pt.hentaistube-v14.5.apk",
-    "icon": "icon/eu.kanade.tachiyomi.animeextension.pt.hentaistube.png",
+    "apk": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/apk/aniyomi-pt.hentaistube-v14.5.apk",
+    "icon": "https://raw.githubusercontent.com/Diogo-Pereira-Ribeiro/Depo/repo/icon/eu.kanade.tachiyomi.animeextension.pt.hentaistube.png",
     "lang": "pt-BR",
     "code": 5,
     "version": "14.5",
@@ -70,7 +70,7 @@
       {
         "name": "HentaisTube",
         "lang": "pt-BR",
-        "id": 755139143857681856,
+        "id": 1626823866352094998,
         "baseUrl": "https://www.hentaistube.com"
       }
     ]
