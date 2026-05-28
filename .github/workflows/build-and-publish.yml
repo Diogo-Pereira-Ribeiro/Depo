@@ -89,14 +89,15 @@ jobs:
           
           # Fazer commit
           git add index.json index.min.json repo.json apk/ icon/ .gitkeep 2>/dev/null || true
-          
+
           # Verificar se há mudanças
           if git diff --cached --quiet; then
             echo "ℹ️  Sem alterações"
           else
             git commit -m "📦 Update extensions [$(date '+%Y-%m-%d %H:%M')]"
-            git push -u origin repo
-            echo "✅ Push realizado"
+            # Force push to ensure repo branch is updated even if histories diverge
+            git push -f origin repo
+            echo "✅ Push realizado (force)"
           fi
 
       - name: Verify index
