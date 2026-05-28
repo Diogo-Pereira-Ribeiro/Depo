@@ -60,6 +60,15 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
+      - name: Prepare push token
+        run: |
+          echo "PUSH_TOKEN=${{ secrets.REPO_PUSH_TOKEN || secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          if [ -n "${PUSH_TOKEN}" ]; then
+            echo "Using provided push token"
+          else
+            echo "No push token available; pushes will likely fail"
+          fi
+
       - name: Push to repo branch
         run: |
           set -euo pipefail
@@ -71,15 +80,12 @@ jobs:
           echo "Remote before change:"
           git remote -v || true
 
-          # Prefer REPO_PUSH_TOKEN (personal access token) if provided, else fallback to GITHUB_TOKEN
-          if [ -n "${{ secrets.REPO_PUSH_TOKEN }}" ]; then
-            echo "Using REPO_PUSH_TOKEN for remote URL"
-            git remote set-url origin https://x-access-token:${{ secrets.REPO_PUSH_TOKEN }}@github.com/${{ github.repository }}.git || true
-          elif [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
-            echo "Using GITHUB_TOKEN for remote URL"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git || true
+          # Use PUSH_TOKEN populated earlier from REPO_PUSH_TOKEN or GITHUB_TOKEN
+          if [ -n "${PUSH_TOKEN}" ]; then
+            echo "Using PUSH_TOKEN for remote URL"
+            git remote set-url origin https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git || true
           else
-            echo "No token available in secrets.REPO_PUSH_TOKEN or secrets.GITHUB_TOKEN — pushes will likely fail"
+            echo "PUSH_TOKEN empty — pushes will likely fail"
           fi
           git fetch origin --prune || true
 
