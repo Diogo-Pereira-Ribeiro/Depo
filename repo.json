@@ -1,9 +1,8 @@
 {
-  "name": "Depo - Extensões de Anime",
-  "description": "Repositório de extensões de anime para Aniyomi",
-  "owner": "Diogo-Pereira-Ribeiro",
-  "url": "https://github.com/Diogo-Pereira-Ribeiro/Depo",
-  "logo": "https://github.com/Diogo-Pereira-Ribeiro.png",
-  "extensions": 4,
-  "updated": "2026-05-27T23:54:36.070293Z"
+  "meta": {
+    "name": "Depo",
+    "shortName": "Depo",
+    "website": "https://github.com/Diogo-Pereira-Ribeiro/Depo",
+    "signingKeyFingerprint": "6b7efc6f95b2d662259d79cf7c87accdc778201ad54d036490a2f0008bca717d"
+  }
 }
