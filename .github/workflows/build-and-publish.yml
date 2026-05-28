@@ -105,6 +105,72 @@ jobs:
             echo "✅ Push realizado (force)"
           fi
 
+      - name: Fallback: Publish via GitHub API
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            function addIfExists(arr, p, disk) {
+              if (fs.existsSync(disk)) arr.push({path: p, disk});
+            }
+
+            const files = [];
+            addIfExists(files, 'index.json', 'index.json');
+            addIfExists(files, 'index.min.json', 'index.min.json');
+            addIfExists(files, 'repo.json', 'repo.json');
+
+            const apkDir = 'apk';
+            if (fs.existsSync(apkDir)) {
+              fs.readdirSync(apkDir).forEach(f => {
+                addIfExists(files, `apk/${f}`, path.join(apkDir, f));
+              });
+            }
+
+            const iconDir = 'icon';
+            if (fs.existsSync(iconDir)) {
+              fs.readdirSync(iconDir).forEach(f => {
+                addIfExists(files, `icon/${f}`, path.join(iconDir, f));
+              });
+            }
+
+            for (const item of files) {
+              const content = fs.readFileSync(item.disk).toString('base64');
+              try {
+                await github.repos.createOrUpdateFileContents({
+                  owner,
+                  repo,
+                  path: item.path,
+                  message: `chore: upload ${item.path}`,
+                  content,
+                  branch: 'repo'
+                });
+                core.info(`Uploaded ${item.path}`);
+              } catch (err) {
+                if (err.status === 422 || err.status === 404) {
+                  // try to create branch 'repo' from main then retry
+                  core.info('Branch repo missing — creating from main');
+                  const mainRef = await github.git.getRef({ owner, repo, ref: 'heads/main' });
+                  const sha = mainRef.data.object.sha;
+                  await github.git.createRef({ owner, repo, ref: 'refs/heads/repo', sha });
+                  await github.repos.createOrUpdateFileContents({
+                    owner,
+                    repo,
+                    path: item.path,
+                    message: `chore: upload ${item.path}`,
+                    content,
+                    branch: 'repo'
+                  });
+                } else {
+                  throw err;
+                }
+              }
+            }
+
       - name: Verify index
         run: |
           if [ -f index.min.json ]; then
