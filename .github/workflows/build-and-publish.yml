@@ -70,6 +70,7 @@ jobs:
           fi
 
       - name: Push to repo branch
+        continue-on-error: true
         run: |
           set -euo pipefail
           set -x
@@ -118,7 +119,7 @@ jobs:
           fi
 
       - name: Fallback - Publish via GitHub API
-        if: ${{ failure() }}
+        if: ${{ always() }}
         uses: actions/github-script@v6
         with:
           script: |
