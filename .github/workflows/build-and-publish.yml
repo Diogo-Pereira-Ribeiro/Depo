@@ -106,7 +106,7 @@ jobs:
           fi
 
       - name: Fallback: Publish via GitHub API
-        if: failure()
+        if: ${{ failure() }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -184,7 +184,7 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() }}
         with:
           name: extensions-repo
           path: |
