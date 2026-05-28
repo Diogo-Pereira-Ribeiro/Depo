@@ -106,23 +106,26 @@ def generate_index():
             # Build package name
             package_name = f'eu.kanade.tachiyomi.animeextension.{lang_code}.{ext_name}'
             
+            # Version should be like 14.X (major.code format)
+            version_str = f'14.{gradle_info["version_code"]}'
+            
             # Create extension entry
-            # Generate stable ID from package name
-            id_hash = int(hash(package_name + gradle_info['name'])) & 0x7fffffffffffffff
+            # Generate stable ID from package name - use long integer
+            id_hash = int(hash(package_name)) & 0x7fffffffffffffff
             
             extension = {
                 'name': f'Aniyomi: {gradle_info["name"]}',
                 'pkg': package_name,
-                'apk': f'aniyomi-{lang_code}.{ext_name}-v1.{gradle_info["version_code"]}.apk',
+                'apk': f'aniyomi-{lang_code}.{ext_name}-v{version_str}.apk',
                 'lang': get_language_name(lang_code),
                 'code': gradle_info['version_code'],
-                'version': f'1.{gradle_info["version_code"]}',
+                'version': version_str,
                 'nsfw': gradle_info['nsfw'],
                 'sources': [
                     {
                         'name': gradle_info['name'],
                         'lang': get_language_name(lang_code),
-                        'id': str(id_hash),
+                        'id': id_hash,
                         'baseUrl': base_url
                     }
                 ]
