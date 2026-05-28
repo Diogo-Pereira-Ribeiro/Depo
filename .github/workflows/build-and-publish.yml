@@ -117,7 +117,7 @@ jobs:
             echo "✅ Push realizado (force)"
           fi
 
-      - name: Fallback: Publish via GitHub API
+      - name: Fallback - Publish via GitHub API
         if: ${{ failure() }}
         uses: actions/github-script@v6
         with:
